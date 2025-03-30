@@ -115,3 +115,31 @@ while run: #while True:
             if e.key == K_SPACE:
                 fire_sound.play()
                 player.fire()
+    #sprite actions, checking rules of game, re-drawing
+    if not finish:
+        #refresh background
+        window.blit(background, (0,0))
+        
+        #writing text on the screen
+        text = font2.render("Score: " + str(score), 1, (255, 255, 255))
+        window.blit(text, (10, 20))
+        
+        text_lose = font2.render("Missed: " + str(lost), 1, (255, 255, 255))
+        window.blit(text_lose, (10, 50))
+        
+        #sprite movements
+        player.update()
+        enemies.update()
+        bullets.update()
+        
+        #update new location
+        player.reset()
+        enemies.draw(window)
+        bullets.draw(window)
+        
+        #collision check
+        collides = sprite.groupcollide(enemies, bullets, True, True)
+        for c in collides:
+            score = score + 1
+            monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, randint(1, 5)) #1 object enemy
+            enemies.add(monster) #add 5 enemies to group enemies
